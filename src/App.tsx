@@ -19,7 +19,7 @@ import CookieConsent from "react-cookie-consent";
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopup, setShowPopup] = useState(true);
 
   // Simulate social proof counter
   const [visitorCount] = useState(Math.floor(Math.random() * 50) + 120);
@@ -438,7 +438,11 @@ function App() {
 
       {/* Calendly Section */}
       <section id="rendez-vous" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <a
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 user-select-none"
+          href="https://calendly.com/pierre-godino-dev/30min"
+          target="_blank"
+        >
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">
               Réservez Votre Consultation Gratuite
@@ -449,13 +453,12 @@ function App() {
             </p>
           </div>
           <iframe
+            style={{ pointerEvents: "none" }}
             src="https://calendly.com/pierre-godino-dev/30min"
             width="100%"
             height="800"
-            frameborder="0"
-            scrolling="no"
           ></iframe>
-        </div>
+        </a>
       </section>
 
       {/* Contact Section */}
@@ -563,41 +566,22 @@ function App() {
       </footer>
 
       {/* Chat Widget */}
-      <button
+      {/* <button
         className="fixed bottom-4 right-4 bg-[#ff6b6b] text-white p-4 rounded-full shadow-lg hover:bg-[#ff5252] transition-colors"
         onClick={() => alert("Chat functionality would be integrated here")}
       >
         <MessageSquare className="w-6 h-6" />
-      </button>
+      </button> */}
 
       {/* Email Popup */}
-      {showPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-xl max-w-md w-full mx-4">
-            <h3 className="text-2xl font-bold mb-4">
-              Recevez nos conseils d'experts
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Inscrivez-vous à notre newsletter pour recevoir nos meilleurs
-              conseils en marketing digital.
-            </p>
-            <input
-              type="email"
-              placeholder="Votre email"
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 mb-4"
-            />
-            <button className="w-full bg-[#ff6b6b] text-white px-6 py-3 rounded-lg hover:bg-[#ff5252] transition-colors">
-              S'inscrire
-            </button>
-            <button
-              className="mt-4 text-gray-500 hover:text-gray-700"
-              onClick={() => setShowPopup(false)}
-            >
-              Non merci
-            </button>
-          </div>
-        </div>
-      )}
+
+      {/* {showPopup && (
+        <script
+          async
+          data-uid="c9a7bd3ce9"
+          src="https://digiwebsolutions.kit.com/c9a7bd3ce9/index.js"
+        ></script>
+      )} */}
     </div>
   );
 }
