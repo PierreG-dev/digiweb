@@ -15,6 +15,7 @@ import {
   MapPin,
   ExternalLink,
 } from "lucide-react";
+import CookieConsent from "react-cookie-consent";
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -87,8 +88,7 @@ function App() {
       title: "Inform'Agen - Informaticien à domicile",
       description:
         "Site vitrine avec formulaire de contact et référencement local optimisé.",
-      image:
-        "https://images.unsplash.com/photo-1551033406-611cf9a28f67?w=800&q=80",
+      image: "/thumbnails/informagen_thumbnail.png",
       results: [
         "10+ demandes d’intervention par mois",
         "+50% de visibilité sur Google",
@@ -141,11 +141,23 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
+      <CookieConsent
+        location="bottom"
+        buttonText="C'est compris !"
+        cookieName="myAwesomeCookieName2"
+        style={{ background: "#2B373B" }}
+        buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
+        expires={150}
+      >
+        Afin d'améliorer l'expérience utilisateur, ce site utilise des cookies.{" "}
+        {/* <span style={{ fontSize: "10px" }}>This bit of text is smaller :O</span> */}
+      </CookieConsent>
       {/* Navigation */}
       <nav className="bg-white shadow-sm fixed w-full z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
+              <img className="w-8" src="/icons/digiweb_logo.svg" alt="" />
               <span className="text-2xl font-bold text-[#ff6b6b]">DigiWeb</span>
             </div>
 
@@ -455,11 +467,13 @@ function App() {
               <div className="space-y-6">
                 <div className="flex items-center">
                   <Mail className="w-6 h-6 mr-4" />
-                  <span>contact@pierre-godino.com</span>
+                  <a href="mailto:contact@pierre-godino.com">
+                    contact@pierre-godino.com
+                  </a>
                 </div>
                 <div className="flex items-center">
                   <Phone className="w-6 h-6 mr-4" />
-                  <span>+33 7 67 24 99 80</span>
+                  <a href="tel:+33767249980">+33 7 67 24 99 80</a>
                 </div>
                 {/* <div className="flex items-center">
                   <MapPin className="w-6 h-6 mr-4" />
@@ -468,23 +482,33 @@ function App() {
               </div>
             </div>
             <div>
-              <form className="space-y-4">
+              <form
+                className="space-y-4"
+                method="POST"
+                action="https://formspree.io/f/xanenwww"
+              >
                 <input
                   type="text"
+                  name="Nom"
                   placeholder="Nom"
                   className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-[#ff6b6b]"
                 />
                 <input
                   type="email"
+                  name="Email"
                   placeholder="Email"
                   className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-[#ff6b6b]"
                 />
                 <textarea
+                  name="Message"
                   placeholder="Message"
                   rows={4}
                   className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-[#ff6b6b]"
                 ></textarea>
-                <button className="w-full bg-[#ff6b6b] text-white px-6 py-3 rounded-lg hover:bg-[#ff5252] transition-colors">
+                <button
+                  type="submit"
+                  className="w-full bg-[#ff6b6b] text-white px-6 py-3 rounded-lg hover:bg-[#ff5252] transition-colors"
+                >
                   Envoyer
                 </button>
               </form>
