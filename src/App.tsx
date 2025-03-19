@@ -145,13 +145,31 @@ function App() {
   ];
 
   useCalendlyEventListener({
-    // onProfilePageViewed: () => console.log("onProfilePageViewed"),
-    // onDateAndTimeSelected: () => console.log("onDateAndTimeSelected"),
-    // onEventTypeViewed: () => console.log("onEventTypeViewed"),
+    onProfilePageViewed: (e) => {
+      TagManager.dataLayer({
+        dataLayer: {
+          event: e.data.event, // Nom de l'événement
+        },
+      });
+    },
+    onDateAndTimeSelected: (e) => {
+      TagManager.dataLayer({
+        dataLayer: {
+          event: e.data.event, // Nom de l'événement
+        },
+      });
+    },
+    onEventTypeViewed: (e) => {
+      TagManager.dataLayer({
+        dataLayer: {
+          event: e.data.event, // Nom de l'événement
+        },
+      });
+    },
     onEventScheduled: (e) => {
       TagManager.dataLayer({
         dataLayer: {
-          event: e.data.payload.event, // Nom de l'événement
+          event: e.data.event, // Nom de l'événement
         },
       });
     },
