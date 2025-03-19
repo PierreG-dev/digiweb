@@ -139,6 +139,36 @@ function App() {
     },
   ];
 
+  useEffect(() => {
+    const handleCalendlyEvent = (event) => {
+      if (event.origin.includes("calendly.com")) {
+        try {
+          let eventData = JSON.parse(event.data);
+
+          if (eventData.event && eventData.event.startsWith("calendly.")) {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              event: eventData.event, // Exemple: calendly.event_scheduled
+              calendly_event: eventData.payload?.event || null,
+              invitee_email: eventData.payload?.email || null,
+              invitee_name: eventData.payload?.name || null,
+            });
+
+            console.log("📢 Calendly Event Tracked:", eventData);
+          }
+        } catch (error) {
+          console.error("❌ Erreur lors du tracking Calendly", error);
+        }
+      }
+    };
+
+    window.addEventListener("message", handleCalendlyEvent);
+
+    return () => {
+      window.removeEventListener("message", handleCalendlyEvent);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       <CookieConsent
@@ -438,27 +468,27 @@ function App() {
 
       {/* Calendly Section */}
       <section id="rendez-vous" className="py-20 bg-white">
-        <a
+        {/* <a
           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 user-select-none"
           href="https://calendly.com/pierre-godino-dev/30min"
           target="_blank"
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">
-              Réservez Votre Consultation Gratuite
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Choisissez un créneau qui vous convient pour discuter de votre
-              projet avec l'un de nos experts.
-            </p>
-          </div>
-          <iframe
-            style={{ pointerEvents: "none" }}
-            src="https://calendly.com/pierre-godino-dev/30min"
-            width="100%"
-            height="800"
-          ></iframe>
-        </a>
+        > */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">
+            Réservez Votre Consultation Gratuite
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Choisissez un créneau qui vous convient pour discuter de votre
+            projet avec l'un de nos experts.
+          </p>
+        </div>
+        <iframe
+          // style={{ pointerEvents: "none" }}
+          src="https://calendly.com/digiweb-solutions/30min"
+          width="100%"
+          height="900"
+        ></iframe>
+        {/* </a> */}
       </section>
 
       {/* Contact Section */}
