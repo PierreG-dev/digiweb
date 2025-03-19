@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import CookieConsent from "react-cookie-consent";
 import TagManager from "react-gtm-module";
+import { InlineWidget, useCalendlyEventListener } from "react-calendly";
 const tagManagerArgs = {
   gtmId: "GTM-5SN4RT9B",
 };
@@ -29,8 +30,6 @@ function App() {
 
   // Simulate social proof counter
   const [visitorCount] = useState(Math.floor(Math.random() * 50) + 120);
-
-  useEffect(() => {}, []);
 
   const services = [
     {
@@ -145,37 +144,19 @@ function App() {
     },
   ];
 
-  useEffect(() => {
-    const handleCalendlyEvent = (event: any) => {
-      if (event.origin.includes("calendly.com")) {
-        try {
-          const eventData = JSON.parse(event.data);
-
-          if (eventData.event && eventData.event.startsWith("calendly.")) {
-            // 🔥 Envoi de l'événement à Google Tag Manager
-            TagManager.dataLayer({
-              dataLayer: {
-                event: eventData.event, // Exemple: calendly.event_scheduled
-                calendly_event: eventData.payload?.event || "Unknown Event",
-                invitee_email: eventData.payload?.email || "Unknown Email",
-                invitee_name: eventData.payload?.name || "Unknown Name",
-              },
-            });
-
-            console.log("📢 Calendly Event Sent to GTM:", eventData);
-          }
-        } catch (error) {
-          console.error("❌ Erreur lors du tracking Calendly", error);
-        }
-      }
-    };
-
-    window.addEventListener("message", handleCalendlyEvent);
-
-    return () => {
-      window.removeEventListener("message", handleCalendlyEvent);
-    };
-  }, []);
+  useCalendlyEventListener({
+    // onProfilePageViewed: () => console.log("onProfilePageViewed"),
+    // onDateAndTimeSelected: () => console.log("onDateAndTimeSelected"),
+    // onEventTypeViewed: () => console.log("onEventTypeViewed"),
+    onEventScheduled: (e) => {
+      TagManager.dataLayer({
+        dataLayer: {
+          event: e.data.payload.event, // Nom de l'événement
+        },
+      });
+    },
+    // onPageHeightResize: (e) => console.log(e.data.payload.height),
+  });
 
   return (
     <div className="min-h-screen bg-white">
@@ -490,12 +471,16 @@ function App() {
             projet avec l'un de nos experts.
           </p>
         </div>
-        <iframe
+        <InlineWidget
+          url="https://calendly.com/digiweb-solutions/30min"
+          styles={{ height: "1250px", width: "100%" }}
+        />
+        {/* <iframe
           // style={{ pointerEvents: "none" }}
           src="https://calendly.com/digiweb-solutions/30min"
           width="100%"
           height="900"
-        ></iframe>
+        ></iframe> */}
         {/* </a> */}
       </section>
 
