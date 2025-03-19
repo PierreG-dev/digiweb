@@ -16,6 +16,12 @@ import {
   ExternalLink,
 } from "lucide-react";
 import CookieConsent from "react-cookie-consent";
+import TagManager from "react-gtm-module";
+const tagManagerArgs = {
+  gtmId: "GTM-5SN4RT9B",
+};
+
+TagManager.initialize(tagManagerArgs);
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -140,21 +146,23 @@ function App() {
   ];
 
   useEffect(() => {
-    const handleCalendlyEvent = (event) => {
+    const handleCalendlyEvent = (event: any) => {
       if (event.origin.includes("calendly.com")) {
         try {
-          let eventData = JSON.parse(event.data);
+          const eventData = JSON.parse(event.data);
 
           if (eventData.event && eventData.event.startsWith("calendly.")) {
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-              event: eventData.event, // Exemple: calendly.event_scheduled
-              calendly_event: eventData.payload?.event || null,
-              invitee_email: eventData.payload?.email || null,
-              invitee_name: eventData.payload?.name || null,
+            // 🔥 Envoi de l'événement à Google Tag Manager
+            TagManager.dataLayer({
+              dataLayer: {
+                event: eventData.event, // Exemple: calendly.event_scheduled
+                calendly_event: eventData.payload?.event || "Unknown Event",
+                invitee_email: eventData.payload?.email || "Unknown Email",
+                invitee_name: eventData.payload?.name || "Unknown Name",
+              },
             });
 
-            console.log("📢 Calendly Event Tracked:", eventData);
+            console.log("📢 Calendly Event Sent to GTM:", eventData);
           }
         } catch (error) {
           console.error("❌ Erreur lors du tracking Calendly", error);
